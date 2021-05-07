@@ -1,0 +1,16 @@
+import stdio;
+
+namespace SomeFunc
+{
+
+int GetOne()
+{
+	return 1;
+}
+
+}
+
+int main()
+{
+	return SomeFunc::GetOne() - 1;
+}

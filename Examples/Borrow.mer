@@ -1,0 +1,34 @@
+import stdio;
+
+struct SomeDef
+{
+	uint SomeVal;
+	ulong SomeOtherVal;
+
+	SomeDef Clone()
+	{
+		SomeDef Item;
+		Item.SomeVal = this.SomeVal;
+		Item.SomeOtherVal = this.SomeOtherVal;
+		return Item;
+	}
+}
+
+void ProcessSomeDef(SomeDef &Item)
+{
+	Item.SomeVal = 2;
+	Item.SomeOtherVal = 4;
+}
+
+void PrintSomeDef(SomeDef &Item)
+{
+	printf("{} {}\n", Item.SomeVal, Item.SomeOtherVal);
+}
+
+int main()
+{
+	SomeDef a;
+	ProcessSomeDef(a);
+	PrintSomeDef(a.Clone());
+	return 0;
+}
