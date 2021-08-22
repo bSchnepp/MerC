@@ -1,6 +1,6 @@
 /* TODO: License header */
 
-#include <vector>
+#include <list>
 #include <string>
 
 #include "Token.hpp"
@@ -21,10 +21,10 @@ public:
 
 	void ParseString(std::string Str);
 
-	std::vector<merc::Token> &GetTokens();
+	std::list<merc::Token> &GetTokens();
 
 private:
-	std::vector<merc::Token> Tokens;
+	std::list<merc::Token> Tokens;
 
 };
 

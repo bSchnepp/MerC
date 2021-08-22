@@ -149,24 +149,6 @@ A 8-bit unsigned integer, with values ranging from 0 to (2<sup>8</sup> - 1)
 This type is aliased to also be 'char'.
 
 
-An implementation may also provide several other types:
-#### word
-An unsigned integer of the same size as the size of a word on the intended
-execution environment. For example, on any x86-descendant, the size of
-a word is 16 bits, whereas on Aarch64 a word is 32 bits.
-
-#### dword
-An unsigned integer of the same size as 2 times the size of a word on the 
-intended execution environment. For example, on any x86-descendant, the size of
-a dword is 32 bits, whereas on Aarch64 a dword is 64 bits.
-
-#### verylong
-A 128-bit integer, with values ranging from -(2<sup>127</sup>) to (2<sup>127</sup> - 1)
-
-#### uverylong
-A 128-bit unsigned integer, with values ranging from 0 to (2<sup>128</sup> - 1)
-
-
 ## 2.2 Floating point types
 Under MerC, a conforming implementation should represent all floating
 point numbers in a means compliant and compatible with IEEE 754. Deviations 
@@ -188,19 +170,6 @@ are truncated, such that the value is treated as equal to another value
 which is the result of interpretting the first 32 bits of the number alone
 as a value.
 
-An implementation may also provide several other types:
-
-#### real
-A compiler-specific value for any floating point type of at least 32 bits
-of precision.
-
-#### dreal
-A compiler-specific value for any floating point type which is double
-the size of a `real`.
-
-#### complex
-A compiler-specific representation of a complex number.
-
 ## 2.3 Strings
 A string is an object of arbitrary length, which can contain characters
 for the intended execution environment. The length of the string
@@ -209,7 +178,7 @@ the byte '0x00' appears. No string may contain that value anywhere but at the
 end of it.
 
 Strings act similar to other native types. A string can be added to another
-string, in which the contents of the first string, except the special 0 chatacter
+string, in which the contents of the first string, except the special 0 character
 are copied into a new string, with the contents to the second string, except for it's
 special 0 character, are added to the end. Finally, the terminating 0 character is added
 to them.
@@ -224,20 +193,32 @@ A conforming implementation must implement the following types:
 #### string
 A heap allocated grouping of characters, which is allocated linearly such
 that the first letter is the first letter of the string, and the second
-to last letter is the last letter of the literal string of characters.
-The representation must have it's last value be equal to the value of 0.
-In addition, the length of the string must be stored along with the value,
-of a size of no less than 32 bits. Each character must be possible to
-cast to che `char` type.
+to last letter is the last letter of the literal string of characters, with the
+final letter being an indicator for the end of string. The end of string indicator
+must have it's value be numerically equal to zero. Each character must be possible
+to cast to che `char` type, and the layout of the string must be done such
+that it appears as an array of `char` type with a length equal to the length
+of the characters specified, plus the additional end of string indicator.
 
 #### wstring
 A heap allocated grouping of wide characters, which is allocated linearly such
 that the first letter is the first letter of the string, and the second
-to last letter is the last letter of the literal string of characters.
-The representation must have it's last value be equal to the value of 0.
-In addition, the length of the string must be stored along with the value,
-of a size of no less than 32 bits. Each character must be possible to
-cast to che `wchar` type.
+to last letter is the last letter of the literal string of characters, with the
+final letter being an indicator for the end of string. The end of string indicator
+must have it's value be numerically equal to zero. Each character must be possible
+to cast to che `wchar` type, and the layout of the string must be done such
+that it appears as an array of `wchar` type with a length equal to the length
+of the characters specified, plus the additional end of string indicator.
+
+#### char
+A representation of a character which is valid within the context of a UTF-8
+string. Each instance of a `char` must have a bit length of at least the number
+of bits required to represent the specific character for a valid UTF-8 string.
+
+#### wchar
+A representation of a character which is valid within the context of a UTF-8
+string. Each instance of a `char` must have a bit length of at least the number
+of bits required to represent the specific character for a valid UTF-8 string.
 
 ## 2.4 Structs
 
@@ -482,6 +463,8 @@ while (x - 10 > 0)
 }
 ```
 will have the print statement execute twice.
+
+#### match
 
 
 ## 4.2 Multi-argument expressions
