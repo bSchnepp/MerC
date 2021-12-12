@@ -1,0 +1,11 @@
+int value(int *ptr)
+{
+	return *ptr;
+}
+
+int main()
+{
+	/* Only pointer cast to char*, subtype*, or alias type* allowed */
+	long v = 0;
+	return value((int*)&v);
+}

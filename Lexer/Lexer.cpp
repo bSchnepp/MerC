@@ -1,5 +1,6 @@
 /* TODO: License header */
 
+#include <array>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -308,11 +309,109 @@ merc::TokenType IdentifySymbol(std::string Str)
 	return merc::TOKEN_TYPE_ERROR;
 }
 
+static bool IsKeyword(std::string Str)
+{
+	constexpr std::array<const char*, 21> Match = 
+	{
+		"long",
+		"int",
+		"short",
+		"byte",
+		"ulong",
+		"uint",
+		"ushort",
+		"ubyte",
+		"char",
+		"wchar",
+		"float",
+		"double",
+		"string",
+		"wstring",
+		"return",
+		"if",
+		"else",
+		"continue",
+		"break",
+		"while",
+		"bool",
+	};
+	return std::any_of(Match.begin(), Match.end(), [&](std::string a){return a == Str;});
+}
+
+merc::TokenType IdentifyKeyword(std::string Str)
+{
+	constexpr std::array<const char*, 21> Strs = 
+	{
+		"long",
+		"int",
+		"short",
+		"byte",
+		"ulong",
+		"uint",
+		"ushort",
+		"ubyte",
+		"char",
+		"wchar",
+		"float",
+		"double",
+		"string",
+		"wstring",
+		"return",
+		"if",
+		"else",
+		"continue",
+		"break",
+		"while",
+		"bool",	
+	};
+
+	constexpr std::array<merc::TokenType, 21> Types = 
+	{
+		merc::TOKEN_TYPE_LONG,
+		merc::TOKEN_TYPE_INT,
+		merc::TOKEN_TYPE_SHORT,
+		merc::TOKEN_TYPE_BYTE,
+		merc::TOKEN_TYPE_ULONG,
+		merc::TOKEN_TYPE_UINT,
+		merc::TOKEN_TYPE_USHORT,
+		merc::TOKEN_TYPE_UBYTE,
+		merc::TOKEN_TYPE_CHAR,
+		merc::TOKEN_TYPE_WCHAR,
+		merc::TOKEN_TYPE_FLOAT,
+		merc::TOKEN_TYPE_DOUBLE,
+		merc::TOKEN_TYPE_STRING,
+		merc::TOKEN_TYPE_WSTRING,
+		merc::TOKEN_TYPE_RETURN,
+		merc::TOKEN_TYPE_IF,
+		merc::TOKEN_TYPE_ELSE,
+		merc::TOKEN_TYPE_CONTINUE,
+		merc::TOKEN_TYPE_BREAK,
+		merc::TOKEN_TYPE_WHILE,
+		merc::TOKEN_TYPE_BOOL,
+	};
+
+	static_assert(Strs.size() == Types.size());
+
+	for (int Index = 0; Index < Strs.size(); Index++)
+	{
+		if (Str.compare(Strs[Index]) == 0)
+		{
+			return Types[Index];
+		}
+	}
+
+	return merc::TOKEN_TYPE_ERROR;
+}
+
 merc::TokenType IdentifyTokenType(std::string Str)
 {
 	if (IsSymbol(Str))
 	{
 		return IdentifySymbol(Str);
+	}
+	else if (IsKeyword(Str))
+	{
+		return IdentifyKeyword(Str);
 	}
 	return merc::TOKEN_TYPE_ERROR;
 }

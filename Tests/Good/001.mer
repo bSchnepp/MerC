@@ -1,0 +1,6 @@
+int main()
+{
+	ulong val = 0;
+	ulong val2 = 1;
+	return val + val2 - 1;
+}

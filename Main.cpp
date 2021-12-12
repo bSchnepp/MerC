@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include <Lexer/Lexer.hpp>
+#include <Parser/AST.hpp>
 
 int main(int argc, char **argv)
 {
@@ -31,10 +32,13 @@ int main(int argc, char **argv)
 		Stream << File.rdbuf();
 
 		L.ParseString(Stream.str());
-		for (auto &I : L.GetTokens())
+		std::list<merc::Token> Toks = L.GetTokens();
+		for (auto &I : Toks)
 		{
 			std::cout << "(" << I.Token << ", " << I.Type << ")" << std::endl;
 		}
+
+		merc::ParseTokens(Toks);
 	}
 	return 0;
 }
